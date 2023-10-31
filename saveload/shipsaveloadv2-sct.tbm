@@ -28,6 +28,10 @@ $On Game Init:
 		end
 		return string.sub(hash, 1, 10)
 	end
+	
+	if ba.getModTitle() == "" then
+		ba.error("Save load requires you have a mod title specified in game_settings.tbl!")
+	end
 
 	--definitions for savefile
 	ShipSave.path_shipsave = "data/players"
