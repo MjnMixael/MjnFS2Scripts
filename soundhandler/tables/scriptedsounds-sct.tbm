@@ -1,0 +1,35 @@
+#Conditional Hooks
+$Application: FS2_Open
+
+$On Game Init:
+[
+
+mn.LuaSEXPs['lua-play-sound-from-file'].Action = function(file, is_voice, loop, var)
+	local ScriptedAudio = require("soundhandler")
+	local handle = ScriptedAudio:playSound(file, is_voice, loop, var)
+end
+
+mn.LuaSEXPs['lua-pause-sound-from-file'].Action = function(handle, pause)
+	local ScriptedAudio = require("soundhandler")
+	
+	if pause == true then
+		ScriptedAudio:pauseSound(ScriptedAudio:getSoundHandle(handle))
+	else
+		ScriptedAudio:resumeSound(ScriptedAudio:getSoundHandle(handle))
+	end
+end
+
+mn.LuaSEXPs['lua-close-sound-from-file'].Action = function(handle)
+	local ScriptedAudio = require("soundhandler")
+	ScriptedAudio:stopSound(ScriptedAudio:getSoundHandle(handle))
+end
+
+]
+
+$On Mission Start:
+[
+local ScriptedAudio = require("soundhandler")
+ScriptedAudio:cleanList()
+]
+
+#End

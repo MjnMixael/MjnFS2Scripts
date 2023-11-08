@@ -1,0 +1,52 @@
+#Lua Enums
+
+#End
+
+#Lua SEXPs
+
+$Operator: lua-play-sound-from-file
+$Category: Change
+$Subcategory: Music and Sound
+$Minimum Arguments: 2
+$Maximum Arguments: 4
+$Return Type: Nothing
+$Description: Plays a sound in either the voice or effects channels
+$Parameter:
+	+Description: The sound file to play
+	+Type: String
+$Parameter:
+	+Description: True to use voice channel, false for effects channel
+	+Type: Boolean
+$Parameter:
+	+Description: True to loop, false otherwise
+	+Type: Boolean
+$Parameter:
+	+Description: The numeric variable to save the sound handle to
+	+Type: Variable
+
+$Operator: lua-pause-sound-from-file
+$Category: Change
+$Subcategory: Music and Sound
+$Minimum Arguments: 2
+$Maximum Arguments: 2
+$Return Type: Nothing
+$Description: Pauses or resumes a sound played by lua-play-sound-from-file
+$Parameter:
+	+Description: The sound handle
+	+Type: Number
+$Parameter:
+	+Description: True to pause, false to resume
+	+Type: Boolean	
+
+$Operator: lua-close-sound-from-file
+$Category: Change
+$Subcategory: Music and Sound
+$Minimum Arguments: 1
+$Maximum Arguments: 1
+$Return Type: Nothing
+$Description: Stops a sound played by lua-play-sound-from-file
+$Parameter:
+	+Description: The sound handle
+	+Type: Number
+
+#End
