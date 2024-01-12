@@ -1,0 +1,102 @@
+#Conditional Hooks
+
+$Application: FS2_Open
+$On Game Init:
+[
+
+	toggleLeads = {
+		LeadIndicator = false, -- If true we use lead and not sight. If false, then use the inverse.
+		Toggle = false, -- If true during a frame of gameplay then the toggle function will run.
+		Update = true -- Set to false to prevent the toggle function from updating itself. Useful if LeadIndicator is changed outside of the gameplay game state.
+	}
+	
+	function toggleLeads:runToggle()
+		if self.Update == true then
+			self.LeadIndicator = not self.LeadIndicator
+		end
+		
+		-- Verify we have a good value
+		if not self.LeadIndicator then
+			self.LeadIndicator = false
+		end
+		
+		self:runSEXP("hud-set-builtin-gauge-active", self.LeadIndicator, "Lead indicator")
+		self:runSEXP("hud-set-builtin-gauge-active", not self.LeadIndicator, "Lead sight")
+		
+		-- Reset everything
+		self.Toggle = false
+		self.Update = true
+		
+		-- Maybe save to disk
+		if ScpuiSystem then
+			ScpuiOptionValues.HUDUseLeadIndicator = self.LeadIndicator
+			ScpuiSystem:saveOptionsToFile(ScpuiOptionValues)
+		end
+	end
+	
+	-- A wrapper for mn.runSEXP that is not fucking stupid.
+	function toggleLeads:runSEXP(sexp, ...)
+
+		local sexp = sexp
+		local warned = false
+	  
+		for _, data in ipairs(arg) do
+	  
+			if data ~= nil and data ~= "" then
+				local param = ""
+		
+				if type(data) == "boolean" then
+					param = "( " .. tostring(data) .. " )"
+				elseif type(data) == "number" then
+					param = math.floor(data)
+				elseif type(data) == "string" then
+					param = "!" .. data .. "!"
+				end
+			  
+				if param ~= "" then
+					sexp = sexp .. " " .. param
+				else
+					ba.warning("Util runSEXP() got parameter '" .. tostring(data) .. "' which is not a valid data type! Must be boolean, number, or string.")
+					warned = true
+				end
+		  
+			end
+		
+		end
+	  
+		if not warned then
+			return mn.runSEXP("( " .. sexp .. " )")
+		end
+	  
+		return false
+	  
+	end
+]
+
+$Application: FS2_Open
+$On Gameplay Start: 
+[
+	toggleLeads.LeadIndicator = false
+	if ScpuiSystem then
+		toggleLeads.LeadIndicator = ScpuiOptionValues.HUDUseLeadIndicator or false
+	end
+	toggleLeads.Toggle = true
+]
+
+$State: GS_STATE_GAME_PLAY
+$On Key Pressed:
+[
+	if hv.Key == "Alt-6" then -- Make this keypress whatever you want
+		toggleLeads.Toggle = true
+	end
+]
+
+$State: GS_STATE_GAME_PLAY
+$On Frame:
+[
+	if toggleLeads.Toggle == true then
+		toggleLeads:runToggle()
+	end
+]
+
+#End
