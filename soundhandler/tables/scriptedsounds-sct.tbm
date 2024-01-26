@@ -13,15 +13,20 @@ mn.LuaSEXPs['lua-pause-sound-from-file'].Action = function(handle, pause)
 	local ScriptedAudio = require("soundhandler")
 	
 	if pause == true then
-		ScriptedAudio:pauseSound(ScriptedAudio:getSoundHandle(handle))
+		ScriptedAudio:pauseSound(handle)
 	else
-		ScriptedAudio:resumeSound(ScriptedAudio:getSoundHandle(handle))
+		ScriptedAudio:resumeSound(handle)
 	end
 end
 
 mn.LuaSEXPs['lua-close-sound-from-file'].Action = function(handle)
 	local ScriptedAudio = require("soundhandler")
-	ScriptedAudio:stopSound(ScriptedAudio:getSoundHandle(handle))
+	ScriptedAudio:stopSound(handle)
+end
+
+mn.LuaSEXPs['lua-stop-all-sounds-from-file'].Action = function(handle)
+	local ScriptedAudio = require("soundhandler")
+	ScriptedAudio:stopAll()
 end
 
 ]

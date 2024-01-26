@@ -49,4 +49,12 @@ $Parameter:
 	+Description: The sound handle
 	+Type: Number
 
+$Operator: lua-stop-all-sounds-from-file
+$Category: Change
+$Subcategory: Music and Sound
+$Minimum Arguments: 0
+$Maximum Arguments: 0
+$Return Type: Nothing
+$Description: Stops all sounds played by lua-play-sound-from-file
+
 #End
